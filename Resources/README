@@ -1,0 +1,34 @@
+Alle Notificationen löschen am Anfang, danach alle wieder einqueuen.
+
+Titanium.App.iOS.cancelAllLocalNotifications();
+
+Dann für jedes Element welches eine Notification erzeugt:
+
+globals.notifications[globals.notifyCounter] = Titanium.App.iOS.scheduleLocalNotification({
+alertBody: event.alertBody,
+userInfo: {
+'uniqueId': event.uniqueId+'',
+'notifyCounter': globals.notifyCounter+''
+},
+sound: "default",
+date: new Date(event.date),
+});
+globals.notifyCounter++;
+
+Achtung: notifications ist ein Array und notifyCounter ist ein int (0) am Anfang.
+Event sieht so aus:
+{ alertBody: "String", uniqueId: "Eine Zahl oder ID", date: new Date().valueOf() }
+
+Ich denke damit solltest du Notifications stressfrei erzeugen können. Was mir auf die Füsse fiel was, dass das Array irgendwo Global bleiben muss, ansonsten wird wohl das Object von der Notification wieder ausm Speicher gelöst und die Notification feuert nicht ab. Zumindest war es so bei meinen Tests anfang des Jahres. Deswegen hab ich das Array und den Counter. Das führe ich beim Start der App auch aus, lösche aber vorher die abgelaufenen Notifikationen aus meinen internen Datenbereich.
+
+Ich hoffe ich konnte dir helfen.
+
+Grüße,
+Torsten
+
+    Options
+    Less
+
+Rainer Schleevoigt
+26/09/2012, 12:56 pm
+Du hast mir sehr geholfen. Danke. Gehe jetzt zu Tisch. 
